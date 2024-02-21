@@ -53,6 +53,10 @@
 		 <div class="footer"
 		 <p>Një hartë interaktive për të garantuar një transparencë sa më të plotë në ndërhyrjet infrastrukturore në shkolla<p>
 		</div> 
+	    	  <div id="search-container" class="ol-control">
+        <input id="search-input" type="text" placeholder="Enter coordinates (e.g., lat, lon)">
+        <button id="search-button">Go</button>
+    </div>
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
@@ -69,6 +73,28 @@
 <script src="js/wNumb.js"></script>
         <script src="data/KufiBashkie_1.js"></script>
         <script src="data/TipiiNdrhyrjes_2.js"></script>
+	    <script>
+		document.addEventListener('DOMContentLoaded', function () {
+            const searchButton = document.getElementById('search-button');
+            const searchInput = document.getElementById('search-input');
+
+            searchButton.addEventListener('click', function () {
+                const coordinates = searchInput.value.split(',');
+                if (coordinates.length === 2) {
+                    const lat = parseFloat(coordinates[0]);
+                    const lon = parseFloat(coordinates[1]);
+                    if (!isNaN(lat) && !isNaN(lon)) {
+                        map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
+                        map.getView().setZoom(15); // You can adjust the zoom level as needed.
+                    } else {
+                        alert('Invalid coordinates. Please enter coordinates in the format: lat, lon');
+                    }
+                } else {
+                    alert('Invalid coordinates. Please enter coordinates in the format: lat, lon');
+                }
+            });
+        });
+    </script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
